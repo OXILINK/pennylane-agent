@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "rules": [
+    {"id": "maif_insurance", "supplier_pattern": "MAIF", "match_type": "insurance_schedule", "amounts": {"standard": 12.02, "december": 12.03}, "fee_percent": 2.39, "day_tolerance": 3, "notes": "Échéancier MAIF mensuel avec frais 2.39%", "created_at": "2025-01-01", "created_by": "init"},
+    {"id": "stelogy_sepa", "supplier_pattern": "STELOGY", "match_type": "sepa", "day_tolerance": 16, "amount_tolerance_pct": 0, "notes": "Prélèvement SEPA STELOGY", "created_at": "2025-01-01", "created_by": "init"},
+    {"id": "la_firme_sepa", "supplier_pattern": "LA FIRME", "match_type": "sepa", "day_tolerance": 16, "amount_tolerance_pct": 0, "notes": "Prélèvement SEPA LA FIRME", "created_at": "2025-01-01", "created_by": "init"},
+    {"id": "gestion_systemes_sepa", "supplier_pattern": "GESTION SYSTEMES", "match_type": "sepa", "day_tolerance": 16, "amount_tolerance_pct": 0, "notes": "Prélèvement SEPA GESTION SYSTEMES", "created_at": "2025-01-01", "created_by": "init"},
+    {"id": "pennylane_cb", "supplier_pattern": "PENNYLANE", "match_type": "deferred_cb", "grouping": "monthly", "amount_tolerance_pct": 5, "notes": "Abonnement SaaS CB différée", "created_at": "2025-01-01", "created_by": "init"},
+    {"id": "yousign_cb", "supplier_pattern": "YOUSIGN", "match_type": "deferred_cb", "grouping": "monthly", "amount_tolerance_pct": 5, "notes": "Abonnement SaaS CB différée", "created_at": "2025-01-01", "created_by": "init"},
+    {"id": "canva_cb", "supplier_pattern": "CANVA", "match_type": "deferred_cb", "grouping": "monthly", "amount_tolerance_pct": 5, "notes": "Abonnement SaaS CB différée", "created_at": "2025-01-01", "created_by": "init"}
+  ],
+  "pending_confirmations": {}
+}
