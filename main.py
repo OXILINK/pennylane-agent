@@ -1,4 +1,3 @@
-</>python
 from flask import Flask, request, jsonify
 import os
 from datetime import datetime
@@ -82,4 +81,3 @@ if __name__ == "__main__":
     print("🚀 Server démarré sur le port", port)
 
     app.run(host="0.0.0.0", port=port)
-</>
