@@ -26,8 +26,8 @@ def get_transactions(days_back: int = 60) -> list[dict]:
             params={"filter[min_date]": since, "page": page, "per_page": 100},
             timeout=30,
         )
-        if resp.status_code == 404:
-            print("[INFO] Aucune transaction bancaire trouvée (404) — liste vide retournée")
+        if resp.status_code in (404, 400):
+            print(f"[INFO] Transactions bancaires : {resp.status_code} — liste vide retournée")
             break
         if resp.status_code == 401:
             print("[ERROR] Token Pennylane invalide ou expiré")
@@ -44,7 +44,7 @@ def get_transactions(days_back: int = 60) -> list[dict]:
     return results
 
 def get_supplier_invoices(days_back: int = 60) -> list[dict]:
-    """Récupère les factures fournisseurs non rapprochées."""
+    """Récupère les factures fournisseurs des N derniers jours."""
     since = (datetime.now() - timedelta(days=days_back)).strftime("%Y-%m-%d")
     results = []
     page = 1
@@ -54,14 +54,13 @@ def get_supplier_invoices(days_back: int = 60) -> list[dict]:
             headers=_headers(),
             params={
                 "filter[min_date]": since,
-                "filter[status]": "unpaid",
                 "page": page,
                 "per_page": 100,
             },
             timeout=30,
         )
-        if resp.status_code == 404:
-            print("[INFO] Aucune facture fournisseur trouvée (404) — liste vide retournée")
+        if resp.status_code in (404, 400):
+            print(f"[INFO] Factures fournisseurs : {resp.status_code} — liste vide retournée")
             break
         if resp.status_code == 401:
             print("[ERROR] Token Pennylane invalide ou expiré")
@@ -93,8 +92,8 @@ def get_customer_invoices(month: Optional[int] = None, year: Optional[int] = Non
         },
         timeout=30,
     )
-    if resp.status_code == 404:
-        print("[INFO] Aucune facture client trouvée (404) — liste vide retournée")
+    if resp.status_code in (404, 400):
+        print(f"[INFO] Factures clients : {resp.status_code} — liste vide retournée")
         return []
     if resp.status_code == 401:
         print("[ERROR] Token Pennylane invalide ou expiré")
