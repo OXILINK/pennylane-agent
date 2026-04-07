@@ -26,6 +26,12 @@ def get_transactions(days_back: int = 60) -> list[dict]:
             params={"filter[min_date]": since, "page": page, "per_page": 100},
             timeout=30,
         )
+        if resp.status_code == 404:
+            print("[INFO] Aucune transaction bancaire trouvée (404) — liste vide retournée")
+            break
+        if resp.status_code == 401:
+            print("[ERROR] Token Pennylane invalide ou expiré")
+            break
         resp.raise_for_status()
         data = resp.json()
         items = data.get("bank_transactions", data.get("data", []))
@@ -54,6 +60,12 @@ def get_supplier_invoices(days_back: int = 60) -> list[dict]:
             },
             timeout=30,
         )
+        if resp.status_code == 404:
+            print("[INFO] Aucune facture fournisseur trouvée (404) — liste vide retournée")
+            break
+        if resp.status_code == 401:
+            print("[ERROR] Token Pennylane invalide ou expiré")
+            break
         resp.raise_for_status()
         data = resp.json()
         items = data.get("supplier_invoices", data.get("data", []))
@@ -75,9 +87,18 @@ def get_customer_invoices(month: Optional[int] = None, year: Optional[int] = Non
     resp = requests.get(
         f"{BASE_URL}/customer_invoices",
         headers=_headers(),
-        params={"filter[min_date]": first_day, "filter[max_date]": last_day.strftime("%Y-%m-%d")},
+        params={
+            "filter[min_date]": first_day,
+            "filter[max_date]": last_day.strftime("%Y-%m-%d"),
+        },
         timeout=30,
     )
+    if resp.status_code == 404:
+        print("[INFO] Aucune facture client trouvée (404) — liste vide retournée")
+        return []
+    if resp.status_code == 401:
+        print("[ERROR] Token Pennylane invalide ou expiré")
+        return []
     resp.raise_for_status()
     data = resp.json()
     return data.get("customer_invoices", data.get("data", []))
