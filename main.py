@@ -294,3 +294,36 @@ if __name__ == "__main__":
         scheduler.start()
     except (KeyboardInterrupt, SystemExit):
         log.info("Agent arrêté.")
+
+
+@app.route("/test-notify", methods=["POST"])
+def test_notify():
+    """Teste l'envoi email + WhatsApp sans avoir besoin de transactions."""
+    import ai_agent as _ai
+    subj = "🧪 Test agent Pennylane"
+    html = """
+<div style="font-family:sans-serif;max-width:600px;padding:20px">
+  <h2 style="color:#7c3aed">Agent Pennylane opérationnel ✅</h2>
+  <p>Votre agent tourne correctement sur Railway.</p>
+  <p>Il rapprochera automatiquement vos factures chaque matin à 08h00.</p>
+</div>
+"""
+    wa = "✅ *Agent Pennylane opérationnel*\nVotre agent tourne sur Railway et vous contactera dès qu'il aura besoin de vous."
+    notifier.notify(subj, html, wa)
+    return jsonify({"status": "ok", "message": "Email + WhatsApp envoyés"})
+
+
+@app.route("/restore-backup", methods=["POST"])
+def restore_backup():
+    """Restaure rules.json depuis le backup en cas de problème."""
+    ok = ai_agent.restore_backup()
+    return jsonify({"status": "ok" if ok else "no_backup"})
+
+
+@app.route("/rules", methods=["GET"])
+def get_rules():
+    """Affiche les règles actuelles (lecture seule)."""
+    import json as _json
+    rules_path = os.path.join(os.path.dirname(__file__), "data", "rules.json")
+    with open(rules_path) as f:
+        return _json.load(f)
